@@ -1,0 +1,175 @@
+{% extends 'CommonBundle::base.html.twig' %}
+
+{% block title %}Подтверждение заказа{% endblock %}
+
+{% block custom %}
+    <script>
+        $('form#confirm').on('submit', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var form = $(this);
+            var url = form.attr('data-action');
+            var method = form.attr('method');
+
+            // Clear form errors
+            form.find('b.help-block').remove();
+            form.find('.form-group').removeClass('has-error');
+
+            $.ajax({
+                type: method,
+                url: url,
+                data: $(this).serializeArray()
+            }).done(function (response) {
+                if (response.success == true) {
+                    document.location = response.redirect;
+                } else {
+                    for (var name in response.errors) {
+                        var error = response.errors[name][0];
+                        form.find('input[name="' + name + '"]')
+                                .parents('.form-group')
+                                .addClass('has-error');
+
+                        form.find('input[name="' + name + '"]')
+                                .parent()
+                                .append('<b class="help-block">' + error + '</b>');
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section class="main-container">
+        <div class="container">
+            <div class="row">
+
+                <div class="main col-md-12">
+                    <h1 class="page-title margin-top-clear">Подтверждение заказа</h1>
+
+                    <div class="separator-2"></div>
+
+                    <table class="table cart table-striped">
+                        <thead>
+                            <tr>
+                                <th>Наименование </th>
+                                <th>Цена </th>
+                                <th>Количество </th>
+                                <th class="amount">Сумма </th>
+                            </tr>
+                            </thead>
+                        <tbody>
+                            {% set sum = 0 %}
+                            {% set quantity = 0 %}
+                            {% set currency = '' %}
+
+                            {% for item in order.cart.items %}
+
+                                {% set product = item.product %}
+                                {% set quantity = quantity + item.quantity %}
+                                {% set sum = sum + item.price(true) * item.quantity %}
+
+                                {% if loop.first %}
+                                    {% set currency = product.currency.name %}
+                                {% endif %}
+
+                                <tr>
+                                    <td class="product">
+                                        <a href="{{ path('products_show', {alias: item.product.alias}) }}">
+                                            {{ item.name }}
+                                        </a>
+                                        <small>{{ item.servicesNames | join(', ') }}</small>
+                                    </td>
+                                    <td class="price">
+                                        {{ item.price(true) }}
+                                        <small>{{ product.currency.name }}</small>
+                                    </td>
+                                    <td class="quantity">{{ item.quantity }}</td>
+                                    <td class="amount">
+                                        {{ item.quantity * item.price(true) }}
+                                        <small>{{ product.currency.name }}</small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td class="total-quantity" colspan="3">Всего {{ quantity }} товаров</td>
+                                <td class="amount">{{ sum }} <small>{{ currency }}</small></td>
+                            </tr>
+                            <tr>
+                                <td class="total-quantity" colspan="1">Доставка</td>
+                                <td colspan="2"><span style="font-style: italic">Новая почта</span></td>
+                                <td class="amount">40 <small>UAH</small></td>
+                            </tr>
+                            <tr>
+                                <td class="total-quantity" colspan="3">Всего</td>
+                                <td class="total-amount">{{ sum + 40 }} <small>{{ currency }}</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="space-bottom"></div>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Информация о доставке</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Метод</td>
+                                <td class="information">Новая почта</td>
+                            </tr>
+                            <tr>
+                                <td>Город</td>
+                                <td class="information">{{ order.delivery.city.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Отделение</td>
+                                <td class="information">
+                                    №{{ order.delivery.warehouse.number }},
+                                    {{ order.delivery.warehouse.address }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="space-bottom"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Информация о получателе</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Имя</td>
+                                <td class="information">{{ order.firstName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Фамилия</td>
+                                <td class="information">{{ order.lastName }} </td>
+                            </tr>
+                            <tr>
+                                <td>Телефон</td>
+                                <td class="information">{{ order.phone }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <form id="confirm" role="form" method="post" data-action="{{ path('api_order_confirm') }}">
+                        <input type="hidden" name="order[id]" value="{{ order.id }}">
+                        <div class="text-right">
+                            <a href="{{ path('common_homepage') }}" class="btn btn-group btn-default">
+                                <i class="icon-left-open-big"></i> Отменить
+                            </a>
+                            <button type="submit" class="btn btn-group btn-default"><i class="icon-check"></i> Подтвердить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

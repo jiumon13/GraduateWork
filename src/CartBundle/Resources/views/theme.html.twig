@@ -1,0 +1,141 @@
+{%- block submit_widget -%}
+    {%- set type = type|default('submit') -%}
+    {% set attr = attr | merge({class: 'submit-button btn btn-default'}) %}
+    {{ block('button_widget') }}
+{%- endblock submit_widget -%}
+
+{%- block form -%}
+    <form method="{{ form.vars.method }}">
+
+        <!--
+        <div class="table-responsive">
+            <table class="table table-bordered tbl-cart">
+                <thead>
+                <tr>
+                    <td class="hidden-xs">Image</td>
+                    <td>Product Name</td>
+                    <td class="td-qty">Quantity</td>
+                    <td>Unit Price</td>
+                    <td>Sub Total</td>
+                    <td>Remove</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="hidden-xs">
+                        <a href="http://demo.18maret.com/demo/mimity/v1.4/detail.html">
+                            <img src="./Shopping Cart - Mimity_files/product-2.jpg" alt="Age Of Wisdom Tan Graphic Tee" title="" width="47" height="47">
+                        </a>
+                    </td>
+                    <td><a href="http://demo.18maret.com/demo/mimity/v1.4/detail.html">Age Of Wisdom Tan Graphic Tee</a>
+                    </td>
+                    <td>
+                        <div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span><input type="text" name="" value="1" class="input-qty form-control text-center" style="display: block;"><span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    </td>
+                    <td class="price">$ 122.21</td>
+                    <td>$ 122.21</td>
+                    <td class="text-center">
+                        <a href="http://demo.18maret.com/demo/mimity/v1.4/cart.html#" class="remove_cart" rel="2">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="hidden-xs">
+                        <a href="http://demo.18maret.com/demo/mimity/v1.4/detail.html">
+                            <img src="./Shopping Cart - Mimity_files/product-12.jpg" alt="Adidas Men Red Printed T-shirt" title="" width="47" height="47">
+                        </a>
+                    </td>
+                    <td><a href="http://demo.18maret.com/demo/mimity/v1.4/detail.html">Adidas Men Red Printed T-shirt</a>
+                    </td>
+                    <td>
+                        <div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span><input type="text" name="" value="2" class="input-qty form-control text-center" style="display: block;"><span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    </td>
+                    <td class="price">$ 20.63</td>
+                    <td>$ 41.26</td>
+                    <td class="text-center">
+                        <a href="http://demo.18maret.com/demo/mimity/v1.4/cart.html#" class="remove_cart" rel="1">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" align="right">Total</td>
+                    <td class="total" colspan="2"><b>$ 163.47</b>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="btn-group btns-cart">
+            <button type="button" class="btn btn-primary" onclick="window.location=&#39;catalogue.html&#39;"><i class="fa fa-arrow-circle-left"></i> Continue Shopping</button>
+            <button type="button" class="btn btn-primary">Update Cart</button>
+            <button type="button" class="btn btn-primary" onclick="window.location=&#39;checkout.html&#39;">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+        //-->
+
+        <table class="table cart table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Товар </th>
+                <th>Цена </th>
+                <th>Количество</th>
+                <th>Удалить </th>
+                <th class="amount">Сумма </th>
+            </tr>
+            </thead>
+            <tbody>
+                {% set sum = 0 %}
+                {% set quantity = 0 %}
+                {% set currency = '' %}
+                {% for name, child in form.items %}
+                    {% set item = child.vars.data %}
+                    {% set product = item.product %}
+                    {% set quantity = quantity + item.quantity %}
+                    {% set sum = sum + item.price(true) * item.quantity %}
+                    {% if loop.first %}
+                        {% set currency = product.currency.name %}
+                    {% endif %}
+                    <tr class="remove-data">
+                        <td class="product">
+                            <a href="{{ path('products_show', {alias: item.product.alias}) }}">{{ item.product.name }}</a>
+                            <small>{{ item.servicesNames|join(', ') }}</small>
+                        </td>
+                        <td class="price">{{ item.price(true) }} <small>{{ product.currency.name }}</small></td>
+                        <td class="quantity">
+                            <div class="form-group has-feedback {% if not child.vars.valid %}has-error{% endif %}">
+                                {{ form_widget(child.quantity) }}
+                                {% if not child.vars.valid %}
+                                    <i class="fa fa-times form-control-feedback"></i>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="remove"><a class="btn btn-remove btn-default">Удалить</a></td>
+                        <td class="amount">
+                            {{ item.price(true) * item.quantity }} <small>{{ product.currency.name }}</small>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {#<tr>#}
+                    {#<td colspan="3">Дисконтный купон</td>#}
+                    {#<td colspan="2">#}
+                        {#<div class="form-group">#}
+                            {#<input type="text" class="form-control">#}
+                        {#</div>#}
+                    {#</td>#}
+                {#</tr>#}
+                <tr>
+                    <td class="total-quantity" colspan="4">Всего {{ quantity }} товаров</td>
+                    <td class="total-amount">{{ sum }} <small>{{ currency }}</small></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            {{ form_widget(form.save) }}
+            {{ form_widget(form.checkout) }}
+            {#<input type="submit" class="btn btn-group btn-default btn-sm" value="Сохранить">#}
+            {#<input type="submit" class="btn btn-group btn-default btn-sm" value="Оформить">#}
+        </div>
+    </form>
+{%- endblock form -%}

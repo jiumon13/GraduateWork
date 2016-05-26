@@ -1,0 +1,10 @@
+services:
+  cart.manager:
+    class: CartBundle\Manager\CartManager
+    arguments:
+      - @service_container
+
+  form.type.cart:
+    class: CartBundle\Form\Type\CartType
+    tags:
+     - {name: form.type, alias: cart }

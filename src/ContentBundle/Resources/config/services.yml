@@ -1,0 +1,25 @@
+services:
+  sonata_page_admin:
+    class: ContentBundle\Admin\PageAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: Content, label: Page }
+    arguments:
+      - ~
+      - ContentBundle\Entity\Page
+      - ~
+
+  sonata_article_admin:
+    class: ContentBundle\Admin\ArticleAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: Content, label: Article }
+    arguments:
+      - ~
+      - ContentBundle\Entity\Article
+      - ~
+
+  extension.content_extension:
+    class: ContentBundle\Extension\ContentExtension
+    arguments:
+      - @doctrine.orm.entity_manager
+    tags:
+      - { name: twig.extension, alias: content_extension }

@@ -1,0 +1,110 @@
+{% extends "CommonBundle::base.html.twig" %}
+
+{% block title %}{{ category.meta.title }}{% endblock %}
+{% block description %}{{ category.meta.description }}{% endblock %}
+{% block keywords %}{{ category.meta.keywords }}{% endblock %}
+
+{% form_theme filter _self %}
+
+{%- block form_row -%}
+    <div class="form-group">
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select class="form-control" {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+            '%name%': name,
+            '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button class="btn btn-default" type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+{%- endblock button_widget -%}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    <input class="form-control" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+{% block breadcrumb %}
+    <!-- page-intro start-->
+    <div class="page-intro" style="margin-top: 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home pr-10"></i><a href="/">Главная</a></li>
+                        <li><a href="{{ path('categories_list') }}">Каталог</a></li>
+                        <li class="active">{{ category.name }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-intro end -->
+{% endblock %}
+
+{% block content %}
+    <!-- main-container start -->
+    <!-- ================ -->
+    <section class="main-container">
+        <div class="container">
+            <div class="row">
+                {% include 'StoreBundle:Widget:product-3-column.html.twig' with {title: category.name, description: category.description, products: products} %}
+                <aside class="col-md-3">
+                    <div class="sidebar">
+                        <div class="block clearfix">
+                            <h2>Фильтр</h2>
+                            <div class="separator"></div>
+                            <div class="sorting-filters">
+                                {{ form(filter) }}
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        {% if category.article %}
+            <div class="container">
+                <div class="row">
+                    <div class="main col-md-12">
+
+                        <h2>{{ category.article.title | raw }}</h2>
+                        <div class="separator-2"></div>
+
+                        {{ category.article.content | raw }}
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

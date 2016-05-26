@@ -1,0 +1,20 @@
+{% extends "CommonBundle::base.html.twig" %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row">
+            {% include 'ContentBundle:Widget:slider.html.twig' %}
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                {% include 'CategoryBundle:Widget:categories.html.twig' %}
+            </div>
+
+            <div class="clearfix visible-sm"></div>
+
+            {% include 'StoreBundle:Widget:product-3-column.html.twig' with { pagination: false } %}
+
+        </div>
+    </div>
+{% endblock %}

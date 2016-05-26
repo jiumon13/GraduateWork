@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <b>Имя:</b> {{ object.firstName }}<br/>
+    <b>Фамилия:</b> {{ object.lastName }}<br/>
+    <b>Телефон:</b> {{ object.phone }}<br/>
+    <b>Доставка:</b> {{ object.delivery }}<br/>
+{% endblock %}

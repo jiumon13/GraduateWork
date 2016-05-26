@@ -1,0 +1,15 @@
+products:
+  resource: @StoreBundle/Controller/ProductController.php
+  type: annotation
+
+products_show:
+  path:     /products/{alias}
+  defaults: { _controller: StoreBundle:Product:show }
+
+order:
+  resource: @StoreBundle/Controller/OrderController.php
+  type: annotation
+
+order_api:
+  resource: @StoreBundle/Controller/API/OrderController.php
+  type: annotation

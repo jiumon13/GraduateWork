@@ -1,0 +1,25 @@
+<!-- main start -->
+<!-- ================ -->
+<div class="main col-md-12">
+
+    <!-- page-title start -->
+    <!-- ================ -->
+    <h1 class="page-title margin-top-clear">{{ title }}</h1>
+    <div class="separator-2"></div>
+    <p class="lead">{{ description | raw }}</p>
+    <!-- page-title end -->
+
+    <!-- shop items start -->
+    <div class="masonry-grid-fitrows row grid-space-20">
+        {% for product in products %}
+            <div class="col-md-3 col-sm-6 masonry-grid-item">
+                {% include 'StoreBundle:Widget:product.html.twig' with {product: product} %}
+            </div>
+        {% endfor %}
+    </div>
+    <!-- shop items end -->
+
+    <div class="clearfix"></div>
+
+</div>
+<!-- main end -->

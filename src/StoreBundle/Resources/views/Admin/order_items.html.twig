@@ -1,0 +1,22 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <table style="border: 1px solid #ccc" border="1" width="100%">
+        <thead style="font-weight: bold">
+            <tr>
+                <td style="padding: 5px">Name</td>
+                <td style="padding: 5px">Qty</td>
+                <td style="padding: 5px">Sum</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object.cart.items %}
+                <tr>
+                    <td style="padding: 5px">{{ item.name(true) }}</td>
+                    <td style="padding: 5px">{{ item.quantity }}</td>
+                    <td style="padding: 5px">{{ item.price * item.quantity }} UAH</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

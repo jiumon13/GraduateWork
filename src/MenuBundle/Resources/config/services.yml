@@ -1,0 +1,15 @@
+services:
+  menu.extension:
+    class: MenuBundle\Extension\MenuTwigExtension
+    arguments: [@doctrine.orm.entity_manager]
+    tags:
+      - { name: twig.extension, alias: menu_twig_extension }
+
+  sonata.menu.admin.menu_item:
+      class: MenuBundle\Admin\Entity\MenuItemAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "Menu", label: "Item" }
+      arguments:
+          - ~
+          - MenuBundle\Entity\MenuItem
+          - ~

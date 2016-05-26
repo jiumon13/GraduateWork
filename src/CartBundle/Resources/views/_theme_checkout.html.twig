@@ -1,0 +1,49 @@
+{%- block form -%}
+    <form method="{{ form.vars.method }}">
+        <table class="table cart table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Товар </th>
+                <th>Цена </th>
+                <th>Количество</th>
+                <th class="amount">Сумма </th>
+            </tr>
+            </thead>
+            <tbody>
+                {% set sum = 0 %}
+                {% set quantity = 0 %}
+                {% set currency = '' %}
+                {% for name, child in form.items %}
+                    {% set item = child.vars.data %}
+                    {% set product = item.product %}
+                    {% set quantity = quantity + item.quantity %}
+                    {% set sum = sum + product.price * item.quantity %}
+                    {% if loop.first %}
+                        {% set currency = product.currency.name %}
+                    {% endif %}
+                    <tr class="remove-data">
+                        <td class="product">
+                            <a href="{{ path('products_show', {alias: item.product.alias}) }}">{{ item.product.name }}</a>
+                        </td>
+                        <td class="price">{{ product.price }} <small>{{ product.currency.name }}</small></td>
+                        <td class="quantity">
+                            <div class="form-group has-feedback {% if not child.vars.valid %}has-error{% endif %}">
+                                {{ form_widget(child.quantity) }}
+                                {% if not child.vars.valid %}
+                                    <i class="fa fa-times form-control-feedback"></i>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="amount">
+                            {{ product.price * item.quantity }} <small>{{ product.currency.name }}</small>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td class="total-quantity" colspan="3">Всего {{ quantity }} товаров</td>
+                    <td class="total-amount">{{ sum }} <small>{{ currency }}</small></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+{%- endblock form -%}

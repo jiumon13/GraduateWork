@@ -1,0 +1,44 @@
+{% extends 'CommonBundle::base.html.twig' %}
+
+{% form_theme form 'CartBundle::theme.html.twig' %}
+
+{% block content %}
+
+    <div class="container main-container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                {% include 'CategoryBundle:Widget:categories.html.twig' %}
+            </div>
+
+            <div class="clearfix visible-sm"></div>
+
+            <!-- Cart -->
+            <div class="col-lg-9 col-md-9 col-sm-12">
+                <div class="col-lg-12 col-sm-12">
+                    <span class="title">Корзина</span>
+                </div>
+                <div class="col-lg-12 col-sm-12 hero-feature">
+
+                    {% if app.session.flashbag.has('warning') %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for flash_message in app.session.flashbag.get('warning') %}
+                                {{ flash_message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if form.vars.data.items | length > 0 %}
+                        {{ form(form) }}
+                    {% else %}
+                        <p>Ваша корзина пуста. Не можете найти интересующие Вас товары? Воспользуйтесь <a href="/categories">каталогом</a>.</p>
+                    {% endif %}
+
+                </div>
+            </div>
+            <!-- End Cart -->
+
+
+        </div>
+    </div>
+
+{% endblock %}

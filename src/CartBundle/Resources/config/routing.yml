@@ -1,0 +1,14 @@
+cart_api_list:
+  path:     /api/v1/cart
+  methods: [GET]
+  defaults: { _controller: CartBundle:API/Cart:list }
+
+cart_api_add:
+  path:     /api/v1/cart
+  methods: [POST]
+  defaults: { _controller: CartBundle:API/Cart:add }
+
+cart_show:
+  path: /cart
+  methods: [GET, POST]
+  defaults: { _controller: CartBundle:Cart:show }

@@ -1,0 +1,55 @@
+{% extends 'CommonBundle::base.html.twig' %}
+
+{% block content %}
+    <section id="{% block page %}{% endblock %}" class="main-container" style="margin-top: 0;">
+        <div class="container">
+            <div class="row">
+
+                {% block checkoutContent %}{% endblock %}
+
+                <aside class="col-md-5">
+                    <div class="sidebar">
+                        <div class="block clearfix">
+                            <h2>Ваш заказ</h2>
+                            <div class="separator"></div>
+                            <table class="table cart table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Шт.</th>
+                                        <th class="amount">Сумма</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart.items %}
+                                        <tr>
+                                            <td class="product">
+                                                <a href="{{ path('products_show', {alias: item.product.alias}) }}">
+                                                    {{ item.name(true) }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ item.quantity }}
+                                            </td>
+                                            <td class="amount">
+                                                {{ item.price * item.quantity }} <small>UAH</small>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td class="total-quantity">Доставка</td>
+                                        <td class="total-amount" colspan="2">40 <small>UAH</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="total-quantity">Всего</td>
+                                        <td class="total-amount" colspan="2">{{ cart.sum + 40 }} <small>UAH</small></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

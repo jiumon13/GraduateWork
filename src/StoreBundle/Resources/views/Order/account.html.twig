@@ -1,0 +1,35 @@
+{% extends 'StoreBundle:Order:base_checkout.html.twig' %}
+{% block title %}Оформление заказа{% endblock %}
+{% block page %}account{% endblock %}
+
+{% block checkoutContent %}
+    <div class="main col-md-7">
+        <h1 class="page-title margin-top-clear">Оформление заказа</h1>
+
+        <div class="separator-2"></div>
+
+        <h2 class="space-top">Контактная информация</h2>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active">
+                <a href="#registration-tab" role="tab" data-toggle="tab">
+                    <i class="fa fa-user pr-5"></i>Я новый покупатель
+                </a>
+            </li>
+            <li>
+                <a href="#login-tab" role="tab" data-toggle="tab">
+                    <i class="fa fa-sign-in pr-5"></i>Я постоянный покупатель
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="registration-tab">
+                {{ include('UserBundle:Widget:registration.html.twig', {target: path('orders_checkout')}) }}
+            </div>
+            <div class="tab-pane fade" id="login-tab">
+                {{ include('UserBundle:Widget:login.horizontal.html.twig', {target: path('orders_checkout')}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

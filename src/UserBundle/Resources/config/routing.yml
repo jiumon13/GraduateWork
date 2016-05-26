@@ -1,0 +1,3 @@
+user_login:
+    resource: @UserBundle/Controller/UserController.php
+    type: annotation

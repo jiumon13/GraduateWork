@@ -1,0 +1,5 @@
+services:
+  form.type.metadata:
+    class: CommonBundle\Form\Type\MetadataFormType
+    tags:
+      - { name: form.type, alias: metadata }

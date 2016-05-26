@@ -1,0 +1,44 @@
+delivery:
+    resource: "@DeliveryBundle/Resources/config/routing.yml"
+    prefix:   /
+
+cart:
+    resource: "@CartBundle/Resources/config/routing.yml"
+    prefix:   /
+
+media:
+    resource: "@MediaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+sonata_user:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+category:
+    resource: "@CategoryBundle/Resources/config/routing.yml"
+    prefix:   /
+
+user:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+store:
+    resource: "@StoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+common:
+    resource: "@CommonBundle/Resources/config/routing.yml"
+    prefix:   /
+
+content:
+    resource: "@ContentBundle/Resources/config/routing.yml"
+    prefix:   /

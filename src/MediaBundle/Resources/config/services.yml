@@ -1,0 +1,25 @@
+services:
+  doctrine.subscriber:
+    class: MediaBundle\EventListener\DoctrineSubscriber
+    arguments:
+      - %kernel.root_dir%/../web
+    tags:
+      - { name: doctrine.event_subscriber }
+
+  sonata.admin.image:
+    class: MediaBundle\Admin\ImageAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: "Media", label: "Image" }
+    arguments:
+      - ~
+      - MediaBundle\Entity\Image
+      - ~
+
+  sonata.admin.gallery:
+    class: MediaBundle\Admin\GalleryAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: "Media", label: "Gallery" }
+    arguments:
+      - ~
+      - MediaBundle\Entity\Gallery
+      - ~

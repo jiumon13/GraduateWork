@@ -1,0 +1,18 @@
+services:
+  form.type.user:
+    class: UserBundle\Form\UserFormType
+    tags:
+      - { name: form.type, alias: user }
+
+  form.type.address:
+    class: UserBundle\Form\AddressFormType
+    tags:
+      - { name: form.type, alias: address }
+
+  form.type.login:
+    arguments:
+      - @doctrine.orm.entity_manager
+      - @security.encoder_factory
+    class: UserBundle\Form\LoginForm
+    tags:
+     - { name: form.type, alias: login }

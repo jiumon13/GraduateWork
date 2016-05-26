@@ -1,0 +1,3 @@
+page:
+  resource: @ContentBundle/Controller/PageController.php
+  type: annotation

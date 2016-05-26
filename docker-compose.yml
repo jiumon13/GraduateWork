@@ -1,0 +1,26 @@
+mysqldata:
+  image: busybox
+  volumes:
+    - /var/lib/mysql/
+
+mysql:
+  image: mysql:5.6
+  command: --sql_mode=NO_ENGINE_SUBSTITUTION --character-set-server=utf8 --collation-server=utf8_general_ci
+  volumes_from:
+    - mysqldata
+  ports:
+   - "3306:3306"
+  environment:
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_DATABASE=application
+
+apache:
+  build: .
+  links:
+   - mysql
+  ports:
+    - "80:80"
+    - "9000:9000"
+  volumes:
+    - .:/var/www
+#    - ./configuration/php.ini:/etc/php5/apache2/conf.d/25-configuration-php.ini:ro

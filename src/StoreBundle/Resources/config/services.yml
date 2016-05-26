@@ -1,0 +1,83 @@
+services:
+  store.product.manager:
+    class: StoreBundle\Model\ProductManager
+    arguments:
+      - @doctrine.orm.entity_manager
+
+  sonata.admin.product:
+    class: StoreBundle\Admin\Entity\ProductAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Product" }
+    arguments:
+        - ~
+        - StoreBundle\Entity\Product
+        - ~
+
+  sonata.admin.currency:
+    class: StoreBundle\Admin\Entity\CurrencyAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Currency" }
+    arguments:
+        - ~
+        - StoreBundle\Entity\Currency
+        - ~
+
+  sonata.admin.product_has_attribute:
+    class: StoreBundle\Admin\Entity\ProductHasAttributeAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Product attribute", show_in_dashboard: false }
+    arguments:
+        - ~
+        - StoreBundle\Entity\ProductHasAttribute
+        - ~
+
+  sonata.admin.product_service:
+    class: StoreBundle\Admin\Entity\ProductServiceAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Product service", show_in_dashboard: false }
+    arguments:
+        - ~
+        - StoreBundle\Entity\ProductService
+        - ~
+
+  sonata.admin.attribute:
+    class: StoreBundle\Admin\Entity\AttributeAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Attribute" }
+    arguments:
+        - ~
+        - StoreBundle\Entity\Attribute
+        - ~
+
+  sonata.admin.service:
+    class: StoreBundle\Admin\Entity\ServiceAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Service" }
+    arguments:
+        - ~
+        - StoreBundle\Entity\Service
+        - ~
+
+  sonata.admin.order:
+    class: StoreBundle\Admin\Entity\OrderAdmin
+    tags:
+        - { name: sonata.admin, manager_type: orm, group: "Store", label: "Order" }
+    arguments:
+        - ~
+        - StoreBundle\Entity\Order
+        - ~
+
+  store.manager.order_manager:
+    class: StoreBundle\Manager\OrderManager
+    arguments:
+      - @doctrine.orm.entity_manager
+      - @service_container
+
+  store.form.type.order_form_type:
+    class: StoreBundle\Form\OrderFormType
+    tags:
+      - { name: form.type, alias: order }
+
+  store.form.handler.order_handler:
+    class: StoreBundle\Form\Handler\OrderFormHandler
+    arguments: [@store.manager.order_manager, @doctrine.orm.entity_manager, @cart.manager, %secret%]

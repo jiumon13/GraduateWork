@@ -1,0 +1,16 @@
+<div class="thumbnail">
+    <a href="{{ path('products_show', {alias: product.alias}) }}" class="link-p">
+        {% if product.preview is not null  %}
+            <img src="{{ asset(product.preview) }}" alt="{{ product.preview.alt }}" title="{{ product.preview.alt }}">
+        {% endif %}
+    </a>
+    <div class="caption prod-caption">
+        <h4><a href="{{ path('products_show', {alias: product.alias}) }}">{{ product.name }}</a></h4>
+        <p>
+        <div class="btn-group">
+            <a class="btn btn-default">{{ product.price }} {{ product.currency }}</a>
+            <a href="#" class="btn btn-primary add-to-cart" data-product="{{ product.id }}"><i class="fa fa-shopping-cart"></i> Купить</a>
+        </div>
+        </p>
+    </div>
+</div>

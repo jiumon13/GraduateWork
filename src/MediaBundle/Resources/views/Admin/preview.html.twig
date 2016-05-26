@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="max-height: 100px">
+        <img src="{{ asset(object.filename) }}" height="100"/>
+    </div>
+{% endblock %}

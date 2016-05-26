@@ -1,0 +1,32 @@
+<!-- product-3-column.html.twig -->
+<div class="col-lg-9 col-md-9 col-sm-12">
+    <div class="col-lg-12 col-sm-12">
+        <span class="title">{{ title }}</span>
+    </div>
+    {% for product in products %}
+        <div class="col-lg-4 col-sm-4 hero-feature text-center">
+            {% include 'StoreBundle:Widget:product.html.twig' with {product: product} %}
+        </div>
+    {% endfor %}
+</div>
+
+
+{% if pagination %}
+    {% if qtyPages > 0 %}
+        <div class="text-center">
+            <ul class="pagination catalogue-pagination">
+                <li {% if currentPage == 1 %}class="disabled"{% endif %}><a href="?page=1">Первая</a></li>
+                <li {% if currentPage < 2 %}class="disabled"{% endif %}><a href="?page={{ currentPage -1 }}">Предыдущая</a></li>
+                {% for i in 1..qtyPages %}
+                    <li {% if currentPage == i %}class="active"{% endif %}>
+                        <a href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+                <li {% if currentPage == qtyPages %}class="disabled"{% endif %}><a href="?page={{ currentPage + 1 }}">Следующая</a></li>
+                <li {% if currentPage == qtyPages %}class="disabled"{% endif %}><a href="?page={{ qtyPages }}">Последняя</a></li>
+            </ul>
+        </div>
+    {% endif %}
+{% endif %}
+
+<!-- End product-3-column.html.twig -->

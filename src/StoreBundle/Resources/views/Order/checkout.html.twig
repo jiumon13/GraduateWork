@@ -1,0 +1,89 @@
+{% extends 'StoreBundle:Order:base_checkout.html.twig' %}
+
+{% block custom %}
+    <script type="text/javascript" src="/js/checkout/checkout.js"></script>
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block form %}
+    <form class="checkout form-horizontal" method="post" role="form">
+        <h2 class="mt-20">Доставка</h2>
+        <fieldset>
+            {{ form_row(form.delivery.service) }}
+            <div class="form-group">
+                <label for="city" class="col-md-4 control-label">Город</label>
+                <div class="col-md-8">
+                    <input type="hidden" class="form-control" id="order_delivery_city" name="order[delivery][city]" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="warehouse" class="col-md-4 control-label">Отделение</label>
+                <div class="col-md-8">
+                    <input type="hidden" class="form-control" id="order_delivery_warehouse" name="order[delivery][warehouse]" required/>
+                </div>
+            </div>
+        </fieldset>
+
+        <h2 class="mt-20">Получатель</h2>
+        <fieldset>
+            {{ form_row(form.first_name) }}
+            {{ form_row(form.last_name) }}
+            {{ form_row(form.phone) }}
+        </fieldset>
+
+        <div class="text-right">
+            <button type="submit" class="btn btn-group btn-default">
+                Продолжить <i class="icon-right-open-big"></i>
+            </button>
+        </div>
+    </form>
+{% endblock %}
+
+{%- block form_label -%}
+    <label for="{{ id }}" class="col-md-4 control-label">{{ name|humanize|trans }}</label>
+{%- endblock form_label -%}
+
+{% block form_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+        <div class="col-md-8">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    <input type="{{ type }}" id="{{ id }}" class="form-control" name="{{ full_name }}" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select id="{{ id }}" name="{{ full_name }}" class="form-control">
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed -%}
+
+{% block checkoutContent %}
+    <div class="main col-md-7">
+        <h1 class="page-title margin-top-clear">Оформление заказа</h1>
+        <div class="separator-2"></div>
+
+        {{ form(form) }}
+    </div>
+{% endblock %}

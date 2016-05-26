@@ -1,0 +1,7 @@
+categories_show:
+    path:     /categories/{alias}
+    defaults: { _controller: CategoryBundle:Category:show }
+
+categories_list:
+    path:     /categories
+    defaults: { _controller: CategoryBundle:Category:list }
